@@ -1,10 +1,13 @@
 import sys
 import pandas as pd
 import requests
+import matplotlib.pyplot as plt
 import os
 import numpy as np
 import argparse
+import matplotlib.image as mpimage
 import add_circles
+from io import BytesIO
 parser = argparse.ArgumentParser(
                     prog='ProgramName',
                     description='What the program does',
@@ -19,10 +22,11 @@ parser.add_argument("--circles",help="Whether to add object circles from survey 
 args = parser.parse_args()
 survey_dict={"DSS":f"CDS%2FP%2FDSS2%2Fcolor","PANSTARR":f"CDS%2FP%2FPanSTARRS%2FDR1%2Fcolor-i-r-g","SDSS":f"CDS%2FP%2FSDSS9%2Fcolor","LEGACY":f"CDS%2FP%2FDESI-Legacy-Surveys%2FDR10%2Fcolor","DES":f"CDS%2FP%2FDES-DR2%2FColorIRG"}
 data= pd.read_csv(args.infile)
-
+pixels=int(args.pixels)
+blank = np.full((pixels, pixels, 4),0, dtype = np.uint8)
 def retrieve_image(ra, dec,surv, scale= 0.35, width= 512, height= 512):
 
-    image_url= (f"https://alasky.cds.unistra.fr/hips-image-services/hips2fits?hips={surv}&width={width}&height={height}&fov={float(args.size)/60}&projection=SIN&coordsys=icrs&rotation_angle=0.0&ra={ra}&dec={dec}&format=jpg")
+    image_url= (f"https://alasky.cds.unistra.fr/hips-image-services/hips2fits?hips={surv}&width={width}&height={height}&fov={float(args.size)/60}&projection=SIN&coordsys=icrs&rotation_angle=0.0&ra={ra}&dec={dec}&format=png")
     return image_url
 
 def extract_images(surv_name,surv_loc):
@@ -36,14 +40,18 @@ def extract_images(surv_name,surv_loc):
         print(f"Getting image at {ra},{dec}")
         image_url= retrieve_image(ra, dec,surv_loc,width=args.pixels,height=args.pixels)
         response= requests.get(image_url)
-        if response.status_code == 200:
+        img = mpimage.imread(BytesIO(response.content))
+        if response.status_code == 200 and np.all(img==blank) == False:
             image_path= os.path.join(output_dir, f"{surv_name}_{int(name)}.jpg")
             counter+= 1
             with open(image_path, "wb") as f:
                 f.write(response.content)
             print(f"Saved image for {name} at {image_path}")
             if args.survey=="SDSS" and args.circles=="y":
-                add_circles.SDSS_circles(ra,dec,row["POS_ERR"],row["RA_2"],row["DEC_2"],row["POSITIONAL_UNCERTAINTY"],int(args.size),args.pixels,image_path)
+                add_circles.SDSS_circles(ra,dec,row["POS_ERR"],row["RA_2"],row["DEC_2"],row["POSITIONAL_UNCERTAINTY"],float(args.size),pixels,img,image_path)
+
+            if args.survey=="DES" and args.circles=="y":
+                add_circles.DES_circles(ra,dec,row["POS_ERR"],float(args.size),pixels,img,image_path)
             elif args.circles=="y":
                 print("Object identification not available for this survey yet.")
 
