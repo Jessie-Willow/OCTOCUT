@@ -18,7 +18,7 @@ parser.add_argument("--survey",help="keyword of survey you want to access. curre
 parser.add_argument("--all",help="Alternative to individually specifying surveys",default="n")
 parser.add_argument("--size",help="size of image in arcminutes", default=3)
 parser.add_argument("--pixels",help="Number of pixels to use in cutout. Output is always square.", default=512)
-parser.add_argument("--circles",help="Whether to add object circles from survey catalogue. only available for SDSS so far. enter y/n", default="n")
+parser.add_argument("--circles",help="Whether to add object circles from survey catalogue. only available for SDSS,DES so far. enter y/n", default="n")
 args = parser.parse_args()
 survey_dict={"DSS":f"CDS%2FP%2FDSS2%2Fcolor","PANSTARR":f"CDS%2FP%2FPanSTARRS%2FDR1%2Fcolor-i-r-g","SDSS":f"CDS%2FP%2FSDSS9%2Fcolor","LEGACY":f"CDS%2FP%2FDESI-Legacy-Surveys%2FDR10%2Fcolor","DES":f"CDS%2FP%2FDES-DR2%2FColorIRG"}
 data= pd.read_csv(args.infile)
