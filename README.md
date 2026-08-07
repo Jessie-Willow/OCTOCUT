@@ -7,7 +7,7 @@ Ingredients:
 A computer capable of connecting to the Artemis HPC.
 
 Step 1:
-Using the terminal, Login to the HPC. you can do that by running
+Using the terminal, Login to the HPC. you can do that by entering
 
 ssh USERNAME@ood.artemis.hrc.sussex.ac.uk.
 
@@ -18,17 +18,21 @@ You will then be prompted to enter your password. Do it.
 Step 2: 
 Ensure code is not run on the login node.
 You will notice that your shell prompt (the text that appears before you type any commands) contains the word login. This is fine for navigating and finding files, but not for running code, as this can slow down the login node for other users.
-To work on a computing node instead, run 
+To work on a computing node instead, enter 
 srun --pty bash
 This tells Slurm workload manager to allocate a computing node 
 
 Step 3:
 Sourcing the virtual environment
-To ensure the code continues to work without constant bug fixing, we use a virtual environment which has specific modules and versions loaded. The virtual environment has already been prepared. To find it, we first navigate to directory with all the code we need. To do this, run:
+To ensure the code continues to work without constant bug fixing, we use a virtual environment which has specific modules and versions loaded. The virtual environment has already been prepared. To find it, we first navigate to directory with all the code we need. To do this, enter:
+
 cd /mnt/xmm-xcs/environments/OCTOCUT
-Now, you need to actually enter the virtual environment. To do this, run:
+
+Now, you need to actually enter the virtual environment. To do this, enter:
+
 source .venv/bin/activate
-Your shell prompt now should begin with (DES_Imaging)
+
+Your shell prompt now should begin with (.venv)
 
 Step 4: Running the code
 To run python files using bash, we first type python3, this lets bash know that the file we are about to pass it is a python file, which it should run.
