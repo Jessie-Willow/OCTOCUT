@@ -8,7 +8,9 @@ A computer capable of connecting to the Artemis HPC.
 
 Step 1:
 Using the terminal, Login to the HPC. you can do that by running
+
 ssh USERNAME@ood.artemis.hrc.sussex.ac.uk.
+
 Replace USERNAME with your sussex username.
 This tells the system to connect to the address of artemis using the SSH protocol(secure shell protocol)
 You will then be prompted to enter your password. Do it.
