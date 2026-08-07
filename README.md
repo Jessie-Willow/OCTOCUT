@@ -31,10 +31,15 @@ Your shell prompt now should begin with (DES_Imaging)
 Step 4: Running the code
 To run python files using bash, we first type python3, this lets bash know that the file we are about to pass it is a python file, which it should run.
 The file in question is called OctoCut.py. The simplest thing you can do with this file is run the help command. In this case, type 
+
 python3 OctoCut.py -h
+
 This should now display a list of the arguments that you can pass to OctoCut.py
 The three most important are --infile, --outdir, and survey. Infile is the csv file of objects you want to make images of. Outdir is the directory you want to save the images to. A sub directory with the name of the survey will be created in this directory, and the images will be saved there. I strongly recommend using a directory with the same name as your octavius page, under /mnt/xmm-xcs/sussex-octavius. Finally, the survey argument tells the cutout maker which survey to use to make the images. The current allowed ones are DSS,PANSTARR,LEGACY,SDSS,DES. Want something not in this list? Email me at ib317@sussex.ac.uk
+
 So, to use the image maker you need to run the command
+
 python3 OctoCut.py --infile FILEPATH --outdir DIRECTORYPATH --survey SURVEYNAME
+
 The cutout maker will then update you on its progress through the file, including whether each image could be produced and its save location (Double check this is the one you expected!)
 
